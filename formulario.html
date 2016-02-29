@@ -2,29 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <!-- <title>Formulario</title> -->
 </head>
 <body>
     <main>
         <form class="form">
-            <div class="col-md-">
-                Artista: <input type="text" id="artista" placeholder="Artista" class="auto-focus">
+            <div class="container">
+                <div class="col-xs-2 col-sm-3 col-md-1 col-lg-1 form-field">
+                    <label for="artista" class="descripcion">Artista</label>
+                </div>
+                <div class="col-xs-10 col-sm-9 col-md-2 col-lg-2 form-field">
+                    <input type="text" class="form-control" id="artista" placeholder="Artista" autofocus>
+                </div>
+                <div class="col-xs-2 col-sm-3 col-md-1 col-lg-1 form-field">
+                    <label for="titulo" class="descripcion">Título</label>
+                </div>
+                <div class="col-xs-10 col-sm-9 col-md-2 col-lg-2 form-field">
+                    <input type="text" class="form-control" id="titulo" placeholder="Título">
+                </div>
+                <div class="col-xs-2 col-sm-3 col-md-1 col-lg-1 form-field">
+                    <label for="url" class="descripcion">URL</label>
+                </div>
+                <div class="col-xs-10 col-sm-9 col-md-2 col-lg-2 form-field">
+                    <input type="text" class="form-control" id="url" placeholder="URL de la canción">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <div class="text-center save-button">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
             </div>
-            <div>
-                Título: <input type="text" id="titulo" placeholder="Título">
-            </div>
-            <div>
-                URL: <input type="text" id="url" placeholder="URL de la canción">
-            </div>
-            <div>
-                <button type="submit" id="guardar">Guardar</button>
-            </div>
-        </form>
-    </main>
+        </div>
+    </form>
+</main>
 
-    <!-- Eliminar jquery cuando integremos con el index -->
-    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="javascript/formulario.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Eliminar jquery cuando integremos con el index -->
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="javascript/formulario.js"></script>
+
 </body>
 </html>
