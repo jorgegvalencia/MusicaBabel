@@ -1,0 +1,19 @@
+.music.item.list {
+    .music.item {
+        border: solid 2px black;
+        padding: 25px 5px;
+        font-size: 11px;
+        text-align: center;
+        button {
+            font-size: 13px;
+        }
+        .artist,
+        .song.title {
+            text-align: left;
+        }
+        .if-is-tablet();
+        .if-is-desktop({
+            font-size: 28px;
+        });
+    }
+}
