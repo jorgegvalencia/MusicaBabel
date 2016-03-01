@@ -15,25 +15,25 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
                     var url = data[i].url; // url de la canción
                     html += "<article class='music item'>";
                     html += "<div class='row'>"
-                    html += "<div class='col-xs-3'>";
+                    html += "<div class='col-xs-6 col-sm-3 col-md-2 col-lg-2 col-md-offset-2 col-lg-offset-2'>";
                     html += "<ul>";
                     html += "<li>Artista: " + artista + "</li>";
                     html += "<li>Canción: " + titulo + "</li>";
                     html += "</ul>";
                     html += "</div>";
-                    html += "<div class='col-xs-6'>";
-                    html += "<div class='control-buttons'>";
-                    html += "<button data-songid='"+ id + "' class='glyphicon glyphicon-play play-button'></button>";
-                    html += "<button data-songid='"+ id + "' class='glyphicon glyphicon-pencil edit-button'></button>";
-                    html += "<button data-songid='"+ id + "' class='glyphicon glyphicon-trash delete-button'></button>";
+                    html += "<div class='col-xs-5 col-sm-8 col-md-5 col-lg-5'>";
+                    html += "<div class='control-buttons btn-group'>";
+                    html += "<button data-songid='"+ id + "' class='glyphicon glyphicon-play play-button btn btn-primary btn-sm' type='button'></button>";
+                    html += "<button data-songid='"+ id + "' class='glyphicon glyphicon-pencil edit-button btn btn-info btn-sm' type='button'></button>";
+                    html += "<button data-songid='"+ id + "' class='glyphicon glyphicon-trash delete-button btn btn-danger btn-sm' type='button'></button>";
                     html += "</div>";
                     html += "</div>";
                     html += "</article>";
                 }
-                $("main").html(html);
+                $("#listadoCanciones").html(html);
             },
             error: function() {
-                $("main").html("Error al cargar las canciones");
+                $("#listadoCanciones").html("Error al cargar las canciones");
             }
         });
     } //loadSongs()

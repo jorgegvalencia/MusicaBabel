@@ -2,16 +2,18 @@
     padding-top: @header-height;
     padding-bottom: @footer-height;
     .music.item {
-        border: solid 2px black;
-        padding: 25px 5px;
-        font-size: 11px;
-        text-align: center;
-        button {
-            font-size: 13px;
+        ul{
+            list-style-type: none;
+            //padding-left: 0;
         }
-        .artist,
-        .song.title {
-            text-align: left;
+        border-bottom: solid 1px black;
+        margin-top: -1px;
+        padding-top: 10px;
+        //text-align: center;
+        .control-buttons{
+            float: right;
+            margin-right: -32px;
+            padding-top: 3px;
         }
     }
 }
