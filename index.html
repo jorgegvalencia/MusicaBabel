@@ -31,11 +31,18 @@
 
         </div>
     </main>
+    <audio id="mediaPlayer" controls="controls" class="audio-player"></audio>
+
     <footer class="web player">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="audio-player-container">
-                    <audio id="mediaPlayer" controls class="audio-player"></audio>
+                    <button id="playButtonFooter" class="playButtonFooter glyphicon glyphicon-play"></button>
+                    <div id="timeline">
+                        <div id="playhead"></div>
+                    </div>
+                    <button id="prevButtonFooter" class="prevButtonFooter glyphicon glyphicon-backward"></button>
+                    <button id="nextButtonFooter" class="nextButtonFooter glyphicon glyphicon-forward"></button>
                 </div>
             </div>
         </div>
@@ -43,6 +50,7 @@
 </div>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="javascript/index.js"></script>
+<script src="javascript/audioPlayer.js"></script>
 </body>
 
 </html>
