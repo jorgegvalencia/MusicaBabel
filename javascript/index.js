@@ -1,33 +1,32 @@
 // ------------------------------------ Funciones
 function loadSongs() {
     $.ajax({
-            url: '/api/canciones',
-            type: 'get',
-            success: function(data) {
-                console.log("loading songs");
-                var html = "";
-                for (var i in data) {
-                    var id = data[i].id; // id de la cancion
-                    var artista = data[i].artista; // nombre del artista
-                    var titulo = data[i].titulo; // nombre de la canción
-                    var url = data[i].url; // url de la canción
-                    html += "<article class='music item'>";
-                    html += "<div class='row'>"
-                    html += "<div class='col-xs-6 col-sm-5 col-md-5 col-lg-5 col-md-offset-2 col-lg-offset-2'>";
-                    html += "<ul>";
-                    html += "<li>Artista: " + artista + "</li>";
-                    html += "<li>Canción: " + titulo + "</li>";
-                    html += "</ul>";
-                    html += "</div>";
-                    html += "<div class='col-xs-5 col-sm-6 col-md-2 col-lg-2'>";
-                    html += "<div class='control-buttons btn-group'>";
-                    html += "<button data-songid='" + id + "' class='glyphicon glyphicon-play play-button btn btn-primary' type='button'></button>";
-                    html += "<button data-songid='" + id + "' class='glyphicon glyphicon-pencil edit-button btn btn-info btn-sm other-button' type='button'></button>";
-                    html += "<button data-songid='" + id + "' class='glyphicon glyphicon-trash delete-button btn btn-danger btn-sm other-button' type='button'></button>";
-                    html += "</div>";
-                    html += "</div>";
-                    html += "</article>";
-                }
+        url: '/api/canciones',
+        type: 'get',
+        success: function(data) {
+            console.log("loading songs");
+            var html = "";
+            for (var i in data) {
+                var id = data[i].id; // id de la cancion
+                var artista = data[i].artista; // nombre del artista
+                var titulo = data[i].titulo; // nombre de la canción
+                var url = data[i].url; // url de la canción
+                html += "<article class='music item'>";
+                html += "<div class='row'>"
+                html += "<div class='col-xs-6 col-sm-5 col-md-5 col-lg-5 col-md-offset-2 col-lg-offset-2'>";
+                html += "<ul>";
+                html += "<li>Artista: " + artista + "</li>";
+                html += "<li>Canción: " + titulo + "</li>";
+                html += "</ul>";
+                html += "</div>";
+                html += "<div class='col-xs-5 col-sm-6 col-md-2 col-lg-2'>";
+                html += "<div class='control-buttons btn-group'>";
+                html += "<button data-songid='" + id + "' class='glyphicon glyphicon-play play-button btn btn-primary' type='button'></button>";
+                html += "<button data-songid='" + id + "' class='glyphicon glyphicon-pencil edit-button btn btn-info btn-sm other-button' type='button'></button>";
+                html += "<button data-songid='" + id + "' class='glyphicon glyphicon-trash delete-button btn btn-danger btn-sm other-button' type='button'></button>";
+                html += "</div>";
+                html += "</div>";
+                html += "</article>";
             }
             $("#listadoCanciones").html(html);
         },
