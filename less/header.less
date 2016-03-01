@@ -1,19 +1,36 @@
-#logo {
-    background-color: tomato;
-    border: solid 2px black;
-}
-
-.web.header {
-    .web();
-    height: 30px;
+.web.header{
+    height: @header-height;
+    background: linear-gradient(to left, #F7C41F, orange, darkorange);
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    .logo{
+        background-color: #DF151A;
+        color: white;
+        border: solid 2px black;
+        border-radius: 5 px;
+        text-align: center;
+        margin-top: 7px;
+    }
+    .add-button {
+        float: right;
+        margin-top: 4px;
+        border: solid 2px black;
+    }
 }
 
 .web.player {
-    .web();
     bottom: 0;
-}
-
-.add-button {
+    height: @footer-height;
+    position: fixed;
+    width: 100%;
     border: solid 2px black;
-    float: right;
+    background: linear-gradient(to right, gold, orange, darkorange);
+    .audio-player-container{
+        margin-top: 4px;
+        .audio-player{
+            display: block;
+            margin: 0 auto;
+        }
+    }
 }
