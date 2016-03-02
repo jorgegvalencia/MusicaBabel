@@ -1,3 +1,20 @@
+function clickPercent(evt) {
+    var timelineWidth = $("#timeline").width();
+    var timeline = $("#timeline");
+    var percent = ((evt.pageX - timeline.offset().left - 7.5) / timelineWidth);
+
+    console.log("Click en porciento de cancion: ",percent);
+    if(percent > 1){
+        return 1;
+    }
+    else if(percent < 0){
+        return 0;
+    }
+    else{
+        return percent;
+    }
+}
+
 $(document).ready(function() {
 
     $("#playButtonFooter").on("click", function(){
@@ -40,4 +57,13 @@ $(document).ready(function() {
     $("#prevButtonFooter").on("click", function(){
 
     });
-})
+
+    //Makes timeline clickable
+    $("#timeline").on("click", function(evt){
+        var tracktime = duration * clickPercent(evt);
+        if(!isNaN(tracktime)){
+            $("#mediaPlayer")[0].currentTime = tracktime;
+            console.log("duracion * clickPercent", tracktime);
+        };
+    });
+});
