@@ -58,14 +58,19 @@ function playSong(button) {
 
 function pauseSong(button) {
     $('#mediaPlayer').trigger('pause');
-    paused = $(this).data().songid;
+    paused = $(button).data().songid;
+    console.log(paused);
     $('#playButtonFooter').addClass('glyphicon-play').removeClass('glyphicon-pause');
     $(button).removeClass('pause-button glyphicon-pause').addClass('play-button glyphicon-play');
 }
 
 // Crear cancion
-function createSong(artista, titulo, url) {
+function createSong() {
     // Petición ajax al servidor (no olvidar ejecutar server.py)
+    //     var id = $('#submitButton').data("songid");
+    var artista = $.trim($("#artista").val());
+    var titulo = $.trim($("#titulo").val());
+    var url = $.trim($("#url").val());
     $.ajax({
         method: 'POST',
         url: "/api/canciones/",
@@ -209,10 +214,13 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
                 if (paused == null) {
                     bufferSong(data);
                     playSong(self);
-                } else {
+                } 
+                else {
                     if (paused == data.id) { // si ya esta cargada la cancion actual
+                        debugger;
                         playSong(self);
-                    } else { // si hay que sobreescribir la cancion
+                    } 
+                    else { // si hay que sobreescribir la cancion
                         bufferSong(data);
                         paused = data.id; // nueva cancion
                         playSong(self);
@@ -248,10 +256,9 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         $('.edit-button-current').addClass('edit-button').removeClass('edit-button-current');
         $(this).addClass('edit-button-current').removeClass('edit-button');
         $('#addSongButton').addClass('cancel-button btn-danger').removeClass('add-button btn-info');
-        if ($('#submitButton').hasClass('create-song')) {
-            $("#submitButton").addClass('edit-song').removeClass('create-song').html('Editar');
-            $("#submitButton").data('songid', id);
-        }
+        $("#submitButton").removeData();
+        $("#submitButton").addClass('edit-song').removeClass('create-song').html('Editar');
+        $("#submitButton").data('songid', id);
     })
 
     // Botón de editar activo
@@ -284,8 +291,8 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
     $("form").on("submit", function() {
         // comprobar si estamos añadiendo u editando
         if (validateForm()) {
-            if ($(this).hasClass('create-song')) {
-                createSong(artista, titulo, url);
+            if ($('#submitButton').hasClass('create-song')) {
+                createSong();
             } else {
                 editSong();
             }
