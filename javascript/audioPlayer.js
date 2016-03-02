@@ -5,11 +5,11 @@ $(document).ready(function() {
 
         if (music.paused) {
             music.play();
-            $(this).removeClass('glyphicon-pause').addClass('glyphicon-play')
+            $(this).addClass('glyphicon-pause').removeClass('glyphicon-play')
             //console.log("Play");
         } else {
             music.pause();
-            $(this).removeClass('glyphicon-play').addClass('glyphicon-pause')
+            $(this).addClass('glyphicon-play').removeClass('glyphicon-pause')
             //console.log("Pause");
         }
     })
