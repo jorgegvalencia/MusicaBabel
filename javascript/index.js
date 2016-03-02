@@ -60,7 +60,29 @@ function pauseSong(button) {
     $('#mediaPlayer').trigger('pause');
     paused = $(this).data().songid;
     $('#playButtonFooter').addClass('glyphicon-play').removeClass('glyphicon-pause');
-    $(this).removeClass('pause-button glyphicon-pause').addClass('play-button glyphicon-play');
+    $(button).removeClass('pause-button glyphicon-pause').addClass('play-button glyphicon-play');
+}
+
+// Crear cancion
+function createSong(artista, titulo, url) {
+    // Petición ajax al servidor (no olvidar ejecutar server.py)
+    $.ajax({
+        method: 'POST',
+        url: "/api/canciones/",
+        data: JSON.stringify({
+            artista: artista,
+            titulo: titulo,
+            url: url,
+        }),
+        contentType: 'application/json',
+        success: function() { // Success function
+            alert("Guardado con éxito!");
+        },
+        error: function() { // Error function
+            alert("Se ha producido un error");
+        }
+    });
+    loadSongs();
 }
 
 // Eliminar cancion
@@ -80,10 +102,10 @@ function deleteSong(button) {
     });
 }
 
-function editSong(button) {
+function editSong() {
     // peticion get para recuperar datos de la cancion
     // traer formulario al main y rellenar inputs con los datos de la cancion
-    var id = $(button).data("songid");
+    var id = $('#submitButton').data("songid");
     var artista = $.trim($("#artista").val());
     var titulo = $.trim($("#titulo").val());
     var url = $.trim($("#url").val());
@@ -143,6 +165,31 @@ function showFormEditSong(button) {
     });
 }
 
+function validateForm() {
+    // Campos del formulario
+    var artista = $.trim($("#artista").val());
+    var titulo = $.trim($("#titulo").val());
+    var url = $.trim($("#url").val());
+
+    // Patrón para la url
+    var pattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/ig
+
+    // Validación de campos
+    if (artista == "") {
+        alert("El artista no puede ser vacío");
+        return false;
+    }
+    if (titulo == "") {
+        alert("El titulo no puede ser vacío");
+        return false;
+    }
+    if (url == "" && pattern.test(url) == false) {
+        alert("La URL de la carátula no es válida");
+        return false;
+    }
+    return true;
+}
+
 // Editar cancion
 $(document).ready(function() { // Cuando la página se ha cargado por completo
 
@@ -181,7 +228,7 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
     // Botón de pausa
     $("main").on('click', '.pause-button', function() {
         console.log("Estableciendo manejador de stop");
-        pauseSong();
+        pauseSong(this);
     })
 
     // Botón de eliminar
@@ -200,14 +247,22 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         showFormEditSong(self);
         $('.edit-button-current').addClass('edit-button').removeClass('edit-button-current');
         $(this).addClass('edit-button-current').removeClass('edit-button');
+        $('#addSongButton').addClass('cancel-button btn-danger').removeClass('add-button btn-info');
+        if ($('#submitButton').hasClass('create-song')) {
+            $("#submitButton").addClass('edit-song').removeClass('create-song').html('Editar');
+            $("#submitButton").data('songid', id);
+        }
     })
 
-    $("main").on('click', '.edit-button-current', function() { // activo
+    // Botón de editar activo
+    $("main").on('click', '.edit-button-current', function() {
         var self = this; // this referencia al elemento del DOM button
         console.log("Estableciendo manejador de edicion", this);
         var id = $(self).data("songid");
         hideForm();
+        $('#addSongButton').addClass('add-button btn-info').removeClass('cancel-button btn-danger');
         $(this).addClass('edit-button').removeClass('edit-button-current');
+        $('#submitButton').addClass('create-song').removeClass('edit-song').removeData().html('Guardar');
     })
 
     // Botón de añadir cancion
@@ -215,6 +270,7 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         showForm();
         console.log("Mostrando formulario");
         $(this).addClass('cancel-button btn-danger').removeClass('add-button btn-info');
+        $('#submitButton').addClass('create-song').removeClass('edit-song').removeData().html('Guardar');
     })
 
     // Botón de cancelar entrada al formulario
@@ -223,6 +279,19 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         console.log("Escondiendo formulario");
         $(this).addClass('add-button btn-info').removeClass('cancel-button btn-danger');
     })
+
+    // Botón de enviar formulario
+    $("form").on("submit", function() {
+        // comprobar si estamos añadiendo u editando
+        if (validateForm()) {
+            if ($(this).hasClass('create-song')) {
+                createSong(artista, titulo, url);
+            } else {
+                editSong();
+            }
+        }
+        return false; // Jquery cancela el envio del formulario (prevent default)
+    });
 
     // -------------------------------------------- Ejecución
     var paused = null;
