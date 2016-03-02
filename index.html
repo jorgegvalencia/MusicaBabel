@@ -15,38 +15,47 @@
             <div class="row">
                 <div class="col-xs-5 col-sm-3 col-md-2 col-lg-2 col-md-offset-2 col-lg-offset-2">
                     <div id="logo" class="logo">
-                         BabelMúsica
-                    </div>
-                </div>
-                <div class="col-xs-6 col-sm-8 col-md-5 col-lg-5">
-                    <button type="button" class="btn btn-info btn-sm add-button">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </button>
-                </div>
+                     BabelMúsica
+                 </div>
+             </div>
+             <div class="col-xs-6 col-sm-8 col-md-5 col-lg-5">
+                <button type="button" class="btn btn-info btn-sm add-button">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </button>
             </div>
         </div>
-    </header>
-    <main class="music item list">
-        <div id="listadoCanciones" class="container">
+    </div>
+</header>
+<main class="music item list">
+    <div id="listadoCanciones" class="container">
 
-        </div>
-    </main>
-    <audio id="mediaPlayer" controls="controls" class="audio-player"></audio>
+    </div>
+</main>
+<audio id="mediaPlayer" controls="controls" class="audio-player"></audio>
 
-    <footer class="web player">
+<footer class="web player">
+    <div class="audio-player-container">
         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="audio-player-container">
-                    <button id="playButtonFooter" class="playButtonFooter glyphicon glyphicon-play"></button>
-                    <div id="timeline">
-                        <div id="playhead"></div>
-                    </div>
+            <div class="col-xs-2 col-sm-1 col-md-2 col-lg-2 col-xs-offset-1 col-md-offset-1 col-md-offset-1 col-lg-offset-1">
+                <button id="playButtonFooter" class="playButtonFooter glyphicon glyphicon-play"></button>
+            </div>
+            <div class="col-xs-4 col-sm-6 col-md-6 col-lg-6">
+
+                <div id="timeline" class="timelineFooter">
+                    <div class="timelineFooterExtra"></div>
+                    <div id="playhead" class="playhead"></div>
+                </div>
+            </div>
+            <div class="col-xs-4 col-sm-2 col-md-2 col-lg-1">
+                <div class="trackControl">
                     <button id="prevButtonFooter" class="prevButtonFooter glyphicon glyphicon-backward"></button>
                     <button id="nextButtonFooter" class="nextButtonFooter glyphicon glyphicon-forward"></button>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+</div>
+</footer>
 </div>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="javascript/index.js"></script>
