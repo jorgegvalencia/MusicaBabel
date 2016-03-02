@@ -26,6 +26,7 @@ function loadSongs() {
                 html += "<button data-songid='" + id + "' class='glyphicon glyphicon-trash delete-button btn btn-danger btn-sm other-button' type='button'></button>";
                 html += "</div>";
                 html += "</div>";
+                html += "<div data-songid='" + id + "' class='edit-form col-xs-12 col-sm-12 col-md-12 col-lg-12' style='background-color: azure'></div>";
                 html += "</article>";
             }
             $("#listadoCanciones").html(html);
@@ -37,7 +38,7 @@ function loadSongs() {
 } //loadSongs()
 
 // Cargar nueva cancion en el reproductor
-function loadSong(data) {
+function bufferSong(data) {
     var html = "";
     html += "<source src='" + data.url + "'>";
     $('#mediaPlayer').html(html); // asigna la source de la cancion
@@ -50,8 +51,16 @@ function playSong(button) {
     $('#mediaPlayer').trigger('play'); // reproduce la cancion
     // cambiar la clase de los demas iconos a play
     $('.pause-button').addClass('play-button glyphicon-play').removeClass('pause-button glyphicon-pause');
+    $('#playButtonFooter').addClass('glyphicon-pause').removeClass('glyphicon-play');
     // cambiar manejador a traves de la clase
     $(button).removeClass('play-button glyphicon-play').addClass('pause-button glyphicon-pause');
+}
+
+function pauseSong(button) {
+    $('#mediaPlayer').trigger('pause');
+    paused = $(this).data().songid;
+    $('#playButtonFooter').addClass('glyphicon-play').removeClass('glyphicon-pause');
+    $(this).removeClass('pause-button glyphicon-pause').addClass('play-button glyphicon-play');
 }
 
 // Eliminar cancion
@@ -67,6 +76,69 @@ function deleteSong(button) {
         },
         error: function() {
             console.log("No se pudo eliminar la cancion");
+        }
+    });
+}
+
+function editSong(button) {
+    // peticion get para recuperar datos de la cancion
+    // traer formulario al main y rellenar inputs con los datos de la cancion
+    var id = $(button).data("songid");
+    var artista = $.trim($("#artista").val());
+    var titulo = $.trim($("#titulo").val());
+    var url = $.trim($("#url").val());
+    $.ajax({
+        url: 'api/canciones/' + id,
+        type: 'put',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            titulo: titulo,
+            artista: artista,
+            url: url
+        }),
+        success: function() {
+            // eliminar cancion del main y recargar
+            // $(button).parent().remove();
+            loadSongs();
+        },
+        error: function() {
+            console.log("No se pudo editar la cancion");
+        }
+    });
+}
+
+function showForm() {
+    $(".form").slideDown('200');
+}
+
+function hideForm() {
+    // resetear campos del formulario
+    $('.form').trigger('reset');
+    $(".form").slideUp('200');
+}
+
+function showFormEditSong(button) {
+    var id = $(button).data("songid");
+    $.ajax({
+        // pedir datos de la cancion
+        url: '/api/canciones/' + id,
+        type: 'get',
+        success: function(data) {
+
+            // cargar campos del formulario con los datos recibidos
+            var artista = $.trim(data.artista);
+            var titulo = $.trim(data.titulo);
+            var url = $.trim(data.url);
+
+            $("#artista").val(artista);
+            $("#titulo").val(titulo);
+            $("#url").val(url);
+
+            // mostrar formulario
+            showForm();
+        },
+        error: function(data) {
+            console.log("Error al solicitar la canción");
         }
     });
 }
@@ -88,13 +160,13 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
             success: function(data) {
                 // si el reproductor no esta reproduciendo ninguna cancion
                 if (paused == null) {
-                    loadSong(data);
+                    bufferSong(data);
                     playSong(self);
                 } else {
                     if (paused == data.id) { // si ya esta cargada la cancion actual
                         playSong(self);
                     } else { // si hay que sobreescribir la cancion
-                        loadSong(data);
+                        bufferSong(data);
                         paused = data.id; // nueva cancion
                         playSong(self);
                     }
@@ -109,27 +181,7 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
     // Botón de pausa
     $("main").on('click', '.pause-button', function() {
         console.log("Estableciendo manejador de stop");
-        $('#mediaPlayer').trigger('pause');
-        paused = $(this).data().songid;
-        $(this).removeClass('pause-button glyphicon-pause').addClass('play-button glyphicon-play');
-    })
-
-    // Botón de editar
-    $("main").on('click', '.edit-button', function() {
-        var self = this; // this referencia al elemento del DOM button
-        var id = $(self).data("songid");
-        console.log("Estableciendo manejador de edicion");
-        $.ajax({
-            // pedir datos de la cancion
-            url: '/api/canciones/' + id,
-            type: 'get',
-            success: function(data) {
-                // cargar campos del formulario con los datos recibidos
-            },
-            error: function(data) {
-                console.log("Error al solicitar la canción");
-            }
-        });
+        pauseSong();
     })
 
     // Botón de eliminar
@@ -138,24 +190,43 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         console.log("Eliminado cancion");
         if (confirm("¿Estás seguro de que quieres eliminar esta canción?") == true)
             deleteSong(self);
-        // $(self).confirmation(options);
-        // $(self).confirmation('toggle');
-        // prompt de confirmacion de eliminacion
+    })
+
+    // Botón de editar
+    $("main").on('click', '.edit-button', function() {
+        var self = this; // this referencia al elemento del DOM button
+        console.log("Estableciendo manejador de edicion");
+        var id = $(self).data("songid");
+        showFormEditSong(self);
+        $('.edit-button-current').addClass('edit-button').removeClass('edit-button-current');
+        $(this).addClass('edit-button-current').removeClass('edit-button');
+    })
+
+    $("main").on('click', '.edit-button-current', function() { // activo
+        var self = this; // this referencia al elemento del DOM button
+        console.log("Estableciendo manejador de edicion", this);
+        var id = $(self).data("songid");
+        hideForm();
+        $(this).addClass('edit-button').removeClass('edit-button-current');
+    })
+
+    // Botón de añadir cancion
+    $('header').on('click', '.add-button', function() {
+        showForm();
+        console.log("Mostrando formulario");
+        $(this).addClass('cancel-button btn-danger').removeClass('add-button btn-info');
+    })
+
+    // Botón de cancelar entrada al formulario
+    $('header').on('click', '.cancel-button', function() {
+        hideForm();
+        console.log("Escondiendo formulario");
+        $(this).addClass('add-button btn-info').removeClass('cancel-button btn-danger');
     })
 
     // -------------------------------------------- Ejecución
-    var options = {
-        trigger: 'click',
-        title: 'Are you sure?',
-        animation: true,
-        placement: 'right',
-        singleton: true,
-        trigger: 'click',
-        popout: true,
-        btnOkLabel: '<i class="icon-ok-sign icon-white"></i> Yes',
-        btnCancelLabel: '<i class="icon-remove-sign"></i> No',
-        container: 'body'
-    }
     var paused = null;
+    var currentForm = null;
+    $(".form").hide();
     loadSongs();
 });
