@@ -26,6 +26,10 @@ $(document).ready(function() {
         duration = $(this)[0].duration;
     });
 
+    $("#mediaPlayer").on("ended", function(){
+        $(this).trigger('play');
+    });
+
     $("#nextButtonFooter").on("click", function(){
 
         //$(this).data("songid", )
