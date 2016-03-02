@@ -1,24 +1,26 @@
-// #playButtonFooter{
-//     height:60px;
-//     width: 60px;
-//     border: none;
-//     background-size: 50% 50%;
-//     background-position: center;
-// }
+.web.player{
+    .playButtonFooter{
+        display: block;
+        float: right;
+        margin-top: 2px;
+    }
+    .trackControl{
+        float: left;
+        margin-top: 2px;
+    }
 
-#timeline{
-    float: right;
-    width: 50%;
-    height: 15px;
-    background: white;
-    border-radius: 15px;
-    margin: 0 0 0 0;
-}
-
-#playhead{
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: gray;
-    margin: 0 0 0 0;
+    .timelineFooter{
+        height: 15px;
+        background: white;
+        border: solid 1px;
+        border-radius: 15px;
+        margin: 5px 0 0 0;
+        .playhead{
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: black;
+            margin: -1px 0 0 0;
+        }
+    }
 }
