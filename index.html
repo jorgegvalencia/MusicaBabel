@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-xs-5 col-sm-3 col-md-2 col-lg-2 col-md-offset-2 col-lg-offset-2">
                     <div id="logo" class="logo">
-                         BabelMúsica
+                        BabelMúsica
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-8 col-md-5 col-lg-5">
@@ -27,12 +27,38 @@
         </div>
     </header>
     <main class="music item list">
+        <form class="form">
+            <div class="container">
+                <div class="col-xs-2 col-sm-3 col-md-1 col-lg-1 form-field">
+                    <label for="artista" class="descripcion">Artista</label>
+                </div>
+                <div class="col-xs-10 col-sm-9 col-md-2 col-lg-2 form-field">
+                    <input type="text" class="form-control" id="artista" placeholder="Artista" autofocus>
+                </div>
+                <div class="col-xs-2 col-sm-3 col-md-1 col-lg-1 form-field">
+                    <label for="titulo" class="descripcion">Título</label>
+                </div>
+                <div class="col-xs-10 col-sm-9 col-md-2 col-lg-2 form-field">
+                    <input type="text" class="form-control" id="titulo" placeholder="Título">
+                </div>
+                <div class="col-xs-2 col-sm-3 col-md-1 col-lg-1 form-field">
+                    <label for="url" class="descripcion">URL</label>
+                </div>
+                <div class="col-xs-10 col-sm-9 col-md-2 col-lg-2 form-field">
+                    <input type="text" class="form-control" id="url" placeholder="URL de la canción">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                    <div class="text-center save-button">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </form>
         <div id="listadoCanciones" class="container">
-
         </div>
     </main>
     <audio id="mediaPlayer" controls="controls" class="audio-player"></audio>
-
     <footer class="web player">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -47,10 +73,11 @@
             </div>
         </div>
     </footer>
-</div>
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="javascript/index.js"></script>
-<script src="javascript/audioPlayer.js"></script>
+    </div>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="javascript/index.js"></script>
+    <script src="javascript/audioPlayer.js"></script>
+    <script src="javascript/formulario.js"></script>
 </body>
 
 </html>
