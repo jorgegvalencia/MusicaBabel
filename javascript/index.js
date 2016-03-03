@@ -48,6 +48,7 @@ function bufferSong(data) {
 // Reproducir cancion
 function playSong(button) {
     console.log("Reproduciendo cancion");
+    $("#playButtonFooter").prop('disabled', false);
     $('#mediaPlayer').trigger('play'); // reproduce la cancion
     // cambiar la clase de los demas iconos a play
     $('.pause-button').addClass('play-button glyphicon-play').removeClass('pause-button glyphicon-pause');
@@ -382,6 +383,7 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
     // -------------------------------------------- Ejecución
     var duration;
     var paused = null;
+    $("#playButtonFooter").prop('disabled', true);
     $(".form").hide();
     loadSongs();
 });
