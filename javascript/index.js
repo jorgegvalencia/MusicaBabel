@@ -155,12 +155,14 @@ function hideForm() {
     $('.form').trigger('reset');
     $(".form").slideUp('200');
     $('#addSongButton').addClass('add-button btn-info').removeClass('cancel-button btn-danger');
+    $('.music.item').removeClass('currentEditing');
 }
 
 function showFormEditSong(button) {
     var id = $(button).data("songid");
     $('.music.item').removeClass('currentEditing');
-    $('.container').find('.music.item[data-songid="'+ id +'"]').addClass('currentEditing');
+    $(button).parents(".music.item").addClass('currentEditing');
+    //$('.container').find('.music.item[data-songid="'+ id +'"]').addClass('currentEditing');
     $.ajax({
         // pedir datos de la cancion
         url: '/api/canciones/' + id,
@@ -237,7 +239,7 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         var self = this; // this referencia al elemento del DOM button
         var id = $(self).data("songid");
         $('.playingIndicator').removeClass('glyphicon glyphicon-volume-up');
-        $('.container').find('.playingIndicator[data-songid="'+ id +'"]').addClass('glyphicon glyphicon-volume-up');
+        $(this).parent().parent().parent().find('.playingIndicator').addClass('glyphicon glyphicon-volume-up');
         console.log("Evento añadido");
         $.ajax({
             url: '/api/canciones/' + id,
@@ -321,11 +323,9 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
 
     // Botón de editar activo
     $("main").on('click', '.edit-button-current', function() {
-        var self = this; // this referencia al elemento del DOM button
         console.log("Estableciendo manejador de edicion", this);
-        var id = $(self).data("songid");
+        var id = $(this).data("songid");
         hideForm();
-        $('.container').find('.music.item[data-songid="'+ id +'"]').addClass('currentEditing');
         $('#addSongButton').addClass('add-button btn-info').removeClass('cancel-button btn-danger');
         $(this).addClass('edit-button').removeClass('edit-button-current');
         $('#submitButton').addClass('create-song').removeClass('edit-song').removeData().html('Guardar');
@@ -344,7 +344,7 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         hideForm();
         console.log("Escondiendo formulario");
         $(this).addClass('add-button btn-info').removeClass('cancel-button btn-danger');
-        $('.container').find('.music.item').addClass('currentEditing');
+        $(this).parents(".music.item").addClass('currentEditing');
     })
 
     // Botón de enviar formulario
