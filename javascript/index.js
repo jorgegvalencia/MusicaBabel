@@ -428,6 +428,9 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
                 playSong($('.play-button[data-songid="' + data.id + '"]'));
                 $('.play-button[data-songid=' + nextsong + ']')
                     .addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
+                $('.playingIndicator').removeClass('glyphicon glyphicon-volume-up');
+                //console.log($('.media.item[data-song-id=' + nextsong + '] .playingIndicator'));
+                $('.music.item').find('.playingIndicator[data-song-id=' + nextsong + ']').addClass('glyphicon glyphicon-volume-up');
             },
             error: function(data) {
                 console.log("Error al reproducir la canción", data);
@@ -439,14 +442,13 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         // cancion actual
         $(this).data('songid', paused);
         var currentSong = $(this).data('songid');
-        console.log('Prev SONG: ' + prevsong);
 
         if ($('#mediaPlayer')[0].playing) {
             pauseSong($('.pause-button[data-songid=' + currentSong + ']'));
         }
         // ver id de la cancion anterior
         var prevsong = findPrev(currentSong);
-        console.log('Next SONG: ' + prevsong);
+        console.log('Prev SONG: ' + prevsong);
         $('.play-button[data-songid=' + currentSong + ']')
             .addClass('play-button glyphicon-play').removeClass('pause-button glyphicon-pause');
 
@@ -462,7 +464,8 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
                 $('.play-button[data-songid=' + prevsong + ']')
                     .addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
                 $('.playingIndicator').removeClass('glyphicon glyphicon-volume-up');
-                $('.play-button[data-songid=' + prevsong + ']').parent().parent().parent().find('.playingIndicator').addClass('glyphicon glyphicon-volume-up');
+                //console.log($('.media.item[data-song-id=' + prevsong + '] .playingIndicator'));
+                $('.music.item').find('.playingIndicator[data-song-id=' + prevsong + ']').addClass('glyphicon glyphicon-volume-up');
             },
             error: function(data) {
                 console.log("Error al reproducir la canción", data);
