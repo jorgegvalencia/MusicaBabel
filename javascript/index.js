@@ -1,3 +1,5 @@
+// var songsIndex = new Array();
+
 // ------------------------------------ Funciones
 function loadSongs() {
     $.ajax({
@@ -6,13 +8,18 @@ function loadSongs() {
         success: function(data) {
             console.log("loading songs");
             var html = "";
+            // songsIndex = [];
             for (var i in data) {
+                // songIndex.push(i);
                 var id = data[i].id; // id de la cancion
                 var artista = data[i].artista; // nombre del artista
                 var titulo = data[i].titulo; // nombre de la canción
                 var url = data[i].url; // url de la canción
-                html += "<article class='music item'>";
+                html += "<article class='music item' data-song-id='"+ id +"'>";
                 html += "<div class='row'>"
+                html += "<div class='hidden-xs col-sm-1 col-md-2 col-lg-2'>";
+                html += "<span class='playingIndicator' data-song-id='"+ id +"'>";
+                html += "</div>";
                 html += "<div class='col-xs-6 col-sm-5 col-md-5 col-lg-5 col-md-offset-2 col-lg-offset-2'>";
                 html += "<ul>";
                 html += "<li>Artista: " + artista + "</li>";
@@ -152,6 +159,8 @@ function hideForm() {
 
 function showFormEditSong(button) {
     var id = $(button).data("songid");
+    $('.music.item').removeClass('currentEditing');
+    $('.container').find('.music.item[data-songid="'+ id +'"]').addClass('currentEditing');
     $.ajax({
         // pedir datos de la cancion
         url: '/api/canciones/' + id,
@@ -227,6 +236,8 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
     $("main").on('click', '.play-button', function() {
         var self = this; // this referencia al elemento del DOM button
         var id = $(self).data("songid");
+        $('.playingIndicator').removeClass('glyphicon glyphicon-volume-up');
+        $('.container').find('.playingIndicator[data-songid="'+ id +'"]').addClass('glyphicon glyphicon-volume-up');
         console.log("Evento añadido");
         $.ajax({
             url: '/api/canciones/' + id,
@@ -314,6 +325,7 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         console.log("Estableciendo manejador de edicion", this);
         var id = $(self).data("songid");
         hideForm();
+        $('.container').find('.music.item[data-songid="'+ id +'"]').addClass('currentEditing');
         $('#addSongButton').addClass('add-button btn-info').removeClass('cancel-button btn-danger');
         $(this).addClass('edit-button').removeClass('edit-button-current');
         $('#submitButton').addClass('create-song').removeClass('edit-song').removeData().html('Guardar');
@@ -332,6 +344,7 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         hideForm();
         console.log("Escondiendo formulario");
         $(this).addClass('add-button btn-info').removeClass('cancel-button btn-danger');
+        $('.container').find('.music.item').addClass('currentEditing');
     })
 
     // Botón de enviar formulario
