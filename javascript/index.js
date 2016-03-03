@@ -63,7 +63,7 @@ function bufferSong(data) {
 function playSong(button) {
     console.log("Reproduciendo cancion", $(button).data('songid'));
     // $("#playButtonFooter").prop('disabled', false);
-    $("-hiddenFooter").slideDown();
+    $(".hiddenFooter").slideDown();
     $('#mediaPlayer').trigger('play'); // reproduce la cancion
     // cambiar la clase de los demas iconos a play
     $('.pause-button').addClass('play-button glyphicon-play').removeClass('pause-button glyphicon-pause');
@@ -145,6 +145,7 @@ function editSong() {
             // $(button).parent().remove();
             loadSongs();
             hideForm();
+            alert('Editado con éxito');
         },
         error: function() {
             console.log("No se pudo editar la cancion");
