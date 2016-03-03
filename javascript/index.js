@@ -398,5 +398,13 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
     var paused = null;
     $("#playButtonFooter").prop('disabled', true);
     $(".form").hide();
+    $.ajaxSetup({
+       beforeSend: function () {
+           $('body').addClass('loading');
+       },
+       complete: function () {
+           $('body').removeClass('loading');
+       }
+   })
     loadSongs();
 });
