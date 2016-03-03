@@ -1,14 +1,21 @@
+body{
+    background-color: lighten(orange, 70%);
+}
+
 .music.item.list {
     padding-top: @header-height;
     padding-bottom: @footer-height;
     .music.item {
         transition: 250ms;
+        background-color: lighten(#7A528E, 50%);
+        border: black solid 1px;
         ul {
             list-style-type: none;
             //padding-left: 0;
         }
         &:hover {
-            background: lighten(orange, 40%);
+            box-shadow: grey 0 2px;
+            background: lighten(#F38630, 25%);
         }
         border-bottom: solid 1px black;
         margin-top: -1px;
@@ -23,9 +30,10 @@
         .other-button {
             margin-top: 2px;
         }
+
     }
     .currentEditing {
-        background: black;
+        background: lighten(#F38630, 7%);
     }
     .playingIndicator {
         float: right;
@@ -44,4 +52,8 @@
         background: rgba(51, 51, 51, 0.4);
         z-index: 2;
     }
+}
+
+button:disabled{
+    visibility: hidden;
 }
