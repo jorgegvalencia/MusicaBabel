@@ -1,4 +1,10 @@
-// var songsIndex = new Array();
+// ------------------------------------ Variables
+
+var songsIndex = [];
+var duration;
+// var next = null;
+// var prev = null;
+var paused = null;
 
 // ------------------------------------ Funciones
 function loadSongs() {
@@ -8,22 +14,22 @@ function loadSongs() {
         success: function(data) {
             console.log("loading songs");
             var html = "";
-            // songsIndex = [];
+            songsIndex = [];
             for (var i in data) {
-                // songIndex.push(i);
                 var id = data[i].id; // id de la cancion
                 var artista = data[i].artista; // nombre del artista
                 var titulo = data[i].titulo; // nombre de la canción
                 var url = data[i].url; // url de la canción
-                html += "<article class='music item' data-song-id='"+ id +"'>";
+                songsIndex.push(id);
+                html += "<article class='music item' data-song-id='" + id + "'>";
                 html += "<div class='row'>"
                 html += "<div class='hidden-xs col-sm-1 col-md-2 col-lg-2'>";
-                html += "<span class='playingIndicator' data-song-id='"+ id +"'>";
+                html += "<span class='playingIndicator' data-song-id='" + id + "'>";
                 html += "</div>";
                 html += "<div class='col-xs-6 col-sm-4 col-md-5 col-lg-5'>";
                 html += "<ul>";
-                html += "<li>Artista: " + artista + "</li>";
-                html += "<li>Canción: " + titulo + "</li>";
+                html += "<li><i>Artista - </i> " + artista + "</li>";
+                html += "<li><i>Canción - </i> " + titulo + "</li>";
                 html += "</ul>";
                 html += "</div>";
                 html += "<div class='col-xs-4 col-sm-6 col-md-2 col-lg-2'>";
@@ -36,6 +42,7 @@ function loadSongs() {
                 html += "<div data-songid='" + id + "' class='edit-form col-xs-12 col-sm-12 col-md-12 col-lg-12' style='background-color: azure'></div>";
                 html += "</article>";
             }
+            console.log(songsIndex);
             $("#listadoCanciones").html(html);
         },
         error: function() {
@@ -54,8 +61,9 @@ function bufferSong(data) {
 
 // Reproducir cancion
 function playSong(button) {
-    console.log("Reproduciendo cancion");
-    $("#playButtonFooter").prop('disabled', false);
+    console.log("Reproduciendo cancion", $(button).data('songid'));
+    // $("#playButtonFooter").prop('disabled', false);
+    $("-hiddenFooter").slideDown();
     $('#mediaPlayer').trigger('play'); // reproduce la cancion
     // cambiar la clase de los demas iconos a play
     $('.pause-button').addClass('play-button glyphicon-play').removeClass('pause-button glyphicon-pause');
@@ -67,7 +75,7 @@ function playSong(button) {
 function pauseSong(button) {
     $('#mediaPlayer').trigger('pause');
     paused = $(button).data().songid;
-    // console.log(paused);
+    console.log('Pausando cancion: ' + paused);
     $('#playButtonFooter').addClass('glyphicon-play').removeClass('glyphicon-pause');
     $(button).removeClass('pause-button glyphicon-pause').addClass('play-button glyphicon-play');
 }
@@ -217,15 +225,35 @@ function clickPercent(evt) {
     var timeline = $("#timeline");
     var percent = ((evt.pageX - timeline.offset().left - 7.5) / timelineWidth);
 
-    console.log("Click en porciento de cancion: ",percent);
-    if(percent > 1){
+    console.log("Click en porciento de cancion: ", percent);
+    if (percent > 1) {
         return 1;
-    }
-    else if(percent < 0){
+    } else if (percent < 0) {
         return 0;
-    }
-    else{
+    } else {
         return percent;
+    }
+}
+
+function findNext(songid) {
+    var currentIndex = songsIndex.indexOf(songid);
+    var lastIndex = songsIndex.length - 1;
+    if (currentIndex == lastIndex) { // si la cancion actual es la última
+        // la siguiente es la primera
+        return songsIndex[0];
+    } else {
+        return songsIndex[currentIndex + 1];
+    }
+}
+
+function findPrev(songid) {
+    var currentIndex = songsIndex.indexOf(songid);
+    var lastIndex = songsIndex.length - 1;
+    if (currentIndex == 0) { // si la cancion actual es la primera
+        // la anterior es la ultima
+        return songsIndex[lastIndex];
+    } else {
+        return songsIndex[currentIndex - 1];
     }
 }
 
@@ -240,7 +268,6 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         var id = $(self).data("songid");
         $('.playingIndicator').removeClass('glyphicon glyphicon-volume-up');
         $(this).parent().parent().parent().find('.playingIndicator').addClass('glyphicon glyphicon-volume-up');
-        console.log("Evento añadido");
         $.ajax({
             url: '/api/canciones/' + id,
             type: 'get',
@@ -251,14 +278,17 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
                     bufferSong(data);
                     paused = data.id; // nueva cancion
                     playSong(self);
+                    // $(self).removeClass('play-button glyphicon-play').addClass('pause-button glyphicon-pause');
                 } else {
                     if (paused == data.id) { // si ya esta cargada la cancion actual
                         playSong(self);
+                        // $(self).removeClass('play-button glyphicon-play').addClass('pause-button glyphicon-pause');
                     } else { // si hay que sobreescribir la cancion
                         // cambiar la source del reproductor
                         bufferSong(data);
                         paused = data.id; // nueva cancion
                         playSong(self);
+                        // $(self).removeClass('play-button glyphicon-play').addClass('pause-button glyphicon-pause');
                     }
                 }
             },
@@ -272,24 +302,24 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
     $("#playButtonFooter").on("click", function() {
         var music = $("#mediaPlayer")[0];
         var self = this;
-        $(this).data('songid',paused);
+        $(this).data('songid', paused);
         var currentSong = $(this).data('songid');
         console.log(currentSong);
         // console.log($(this).data('songid'));
         if (music.paused) {
             // music.play();
             playSong(self);
-            console.log( currentSong );
-            $('.play-button[data-songid='+currentSong+']')
-            .addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
-                //console.log("Play");
+            console.log(currentSong);
+            $('.play-button[data-songid=' + currentSong + ']')
+                .addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
+            //console.log("Play");
         } else {
             // music.pause();
             pauseSong(self);
             $('.pause-button')
-            .addClass('play-button glyphicon-play').removeClass('pause-button glyphicon-pause');
+                .addClass('play-button glyphicon-play').removeClass('pause-button glyphicon-pause');
             // $(this).addClass('glyphicon-play').removeClass('glyphicon-pause')
-                //console.log("Pause");
+            //console.log("Pause");
         }
     })
 
@@ -360,51 +390,109 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         return false; // Jquery cancela el envio del formulario (prevent default)
     });
 
-    $("#mediaPlayer").on("timeupdate", function(){
+    $("#mediaPlayer").on("timeupdate", function() {
         var playPercent = 100 * ($(this)[0].currentTime / duration);
         $("#playhead")[0].style.marginLeft = playPercent + "%";
     });
 
-    $("#mediaPlayer").on("canplaythrough", function(){
+    $("#mediaPlayer").on("canplaythrough", function() {
         duration = $(this)[0].duration;
     });
 
-    $("#mediaPlayer").on("ended", function(){
+    $("#mediaPlayer").on("ended", function() {
         $(this).trigger('play');
     });
 
-    $("#nextButtonFooter").on("click", function(){
+    $("#nextButtonFooter").on("click", function() {
+        // cancion actual
+        $(this).data('songid', paused);
+        var currentSong = $(this).data('songid');
+        console.log('Current SONG: ' + currentSong);
+        if ($('#mediaPlayer')[0].playing) {
+            pauseSong($('.pause-button[data-songid=' + currentSong + ']'));
+        }
+        // ver id de la siguiente cancion
+        var nextsong = findNext(currentSong);
+        console.log('Next SONG: ' + nextsong);
+        $('.play-button[data-songid=' + currentSong + ']')
+            .addClass('play-button glyphicon-play').removeClass('pause-button glyphicon-pause');
 
-        //$(this).data("songid", )
-
-
+        // pedir la siguiente cancion
+        $.ajax({
+            url: '/api/canciones/' + nextsong,
+            type: 'get',
+            success: function(data) {
+                // cargar la cancion en el reproductor
+                bufferSong(data);
+                paused = data.id; // establecer la cancion actual
+                playSong($('.play-button[data-songid="' + data.id + '"]'));
+                $('.play-button[data-songid=' + nextsong + ']')
+                    .addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
+                $('.playingIndicator').removeClass('glyphicon glyphicon-volume-up');
+                //console.log($('.media.item[data-song-id=' + nextsong + '] .playingIndicator'));
+                $('.music.item').find('.playingIndicator[data-song-id=' + nextsong + ']').addClass('glyphicon glyphicon-volume-up');
+            },
+            error: function(data) {
+                console.log("Error al reproducir la canción", data);
+            }
+        });
     });
 
-    $("#prevButtonFooter").on("click", function(){
+    $("#prevButtonFooter").on("click", function() {
+        // cancion actual
+        $(this).data('songid', paused);
+        var currentSong = $(this).data('songid');
 
+        if ($('#mediaPlayer')[0].playing) {
+            pauseSong($('.pause-button[data-songid=' + currentSong + ']'));
+        }
+        // ver id de la cancion anterior
+        var prevsong = findPrev(currentSong);
+        console.log('Prev SONG: ' + prevsong);
+        $('.play-button[data-songid=' + currentSong + ']')
+            .addClass('play-button glyphicon-play').removeClass('pause-button glyphicon-pause');
+
+        // pedir la siguiente cancion
+        $.ajax({
+            url: '/api/canciones/' + prevsong,
+            type: 'get',
+            success: function(data) {
+                // cargar la cancion en el reproductor
+                bufferSong(data);
+                paused = data.id; // establecer la cancion actual
+                playSong($('.play-button[data-songid="' + data.id + '"]'));
+                $('.play-button[data-songid=' + prevsong + ']')
+                    .addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
+                $('.playingIndicator').removeClass('glyphicon glyphicon-volume-up');
+                //console.log($('.media.item[data-song-id=' + prevsong + '] .playingIndicator'));
+                $('.music.item').find('.playingIndicator[data-song-id=' + prevsong + ']').addClass('glyphicon glyphicon-volume-up');
+            },
+            error: function(data) {
+                console.log("Error al reproducir la canción", data);
+            }
+        });
     });
 
     //Makes timeline clickable
-    $("#timeline").on("click", function(evt){
+    $("#timeline").on("click", function(evt) {
         var tracktime = duration * clickPercent(evt);
-        if(!isNaN(tracktime)){
+        if (!isNaN(tracktime)) {
             $("#mediaPlayer")[0].currentTime = tracktime;
             console.log("duracion * clickPercent", tracktime);
         };
     });
 
     // -------------------------------------------- Ejecución
-    var duration;
-    var paused = null;
-    $("#playButtonFooter").prop('disabled', true);
+    // $("#playButtonFooter").prop('disabled', true);
+    $('.hiddenFooter').hide();
     $(".form").hide();
     $.ajaxSetup({
-       beforeSend: function () {
-           $('body').addClass('loading');
-       },
-       complete: function () {
-           $('body').removeClass('loading');
-       }
-   })
+        beforeSend: function() {
+            $('body').addClass('loading');
+        },
+        complete: function() {
+            $('body').removeClass('loading');
+        }
+    })
     loadSongs();
 });
