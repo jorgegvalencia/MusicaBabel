@@ -3,33 +3,45 @@
     padding-bottom: @footer-height;
     .music.item {
         transition: 250ms;
-        ul{
+        ul {
             list-style-type: none;
             //padding-left: 0;
         }
-        &:hover{
-            background: lighten(orange,40%);
+        &:hover {
+            background: lighten(orange, 40%);
         }
         border-bottom: solid 1px black;
         margin-top: -1px;
         padding-top: 10px;
         font-family: 'Source Sans Pro';
         //text-align: center;
-        .control-buttons{
+        .control-buttons {
             float: right;
             margin-right: -42px;
             padding-top: 3px;
         }
-        .other-button{
+        .other-button {
             margin-top: 2px;
         }
     }
-    .currentEditing{
+    .currentEditing {
         background: black;
     }
-    .playingIndicator{
+    .playingIndicator {
         float: right;
         margin-top: 11px;
         font-size: 20px;
+    }
+}
+
+.loading {
+    .loader {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background: rgba(51, 51, 51, 0.4);
+        z-index: 2;
     }
 }
