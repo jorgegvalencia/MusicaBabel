@@ -19,7 +19,7 @@ function loadSongs() {
                 html += "<li>Canción: " + titulo + "</li>";
                 html += "</ul>";
                 html += "</div>";
-                html += "<div class='col-xs-5 col-sm-6 col-md-2 col-lg-2'>";
+                html += "<div class='col-xs-4 col-sm-6 col-md-2 col-lg-2'>";
                 html += "<div class='control-buttons btn-group'>";
                 html += "<button data-songid='" + id + "' class='glyphicon glyphicon-play play-button btn btn-primary' type='button'></button>";
                 html += "<button data-songid='" + id + "' class='glyphicon glyphicon-pencil edit-button btn btn-info btn-sm other-button' type='button'></button>";
@@ -59,7 +59,7 @@ function playSong(button) {
 function pauseSong(button) {
     $('#mediaPlayer').trigger('pause');
     paused = $(button).data().songid;
-    console.log(paused);
+    // console.log(paused);
     $('#playButtonFooter').addClass('glyphicon-play').removeClass('glyphicon-pause');
     $(button).removeClass('pause-button glyphicon-pause').addClass('play-button glyphicon-play');
 }
@@ -82,6 +82,7 @@ function createSong() {
         contentType: 'application/json',
         success: function() { // Success function
             alert("Guardado con éxito!");
+            hideForm();
         },
         error: function() { // Error function
             alert("Se ha producido un error");
@@ -127,6 +128,7 @@ function editSong() {
             // eliminar cancion del main y recargar
             // $(button).parent().remove();
             loadSongs();
+            hideForm();
         },
         error: function() {
             console.log("No se pudo editar la cancion");
@@ -136,12 +138,15 @@ function editSong() {
 
 function showForm() {
     $(".form").slideDown('200');
+    $('#addSongButton').addClass('cancel-button btn-danger').removeClass('add-button btn-info');
+    $(window).scrollTop(0);
 }
 
 function hideForm() {
     // resetear campos del formulario
     $('.form').trigger('reset');
     $(".form").slideUp('200');
+    $('#addSongButton').addClass('add-button btn-info').removeClass('cancel-button btn-danger');
 }
 
 function showFormEditSong(button) {
@@ -195,6 +200,23 @@ function validateForm() {
     return true;
 }
 
+function clickPercent(evt) {
+    var timelineWidth = $("#timeline").width();
+    var timeline = $("#timeline");
+    var percent = ((evt.pageX - timeline.offset().left - 7.5) / timelineWidth);
+
+    console.log("Click en porciento de cancion: ",percent);
+    if(percent > 1){
+        return 1;
+    }
+    else if(percent < 0){
+        return 0;
+    }
+    else{
+        return percent;
+    }
+}
+
 // Editar cancion
 $(document).ready(function() { // Cuando la página se ha cargado por completo
 
@@ -206,21 +228,20 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         var id = $(self).data("songid");
         console.log("Evento añadido");
         $.ajax({
-            // cambiar la source del reproductor
             url: '/api/canciones/' + id,
             type: 'get',
             success: function(data) {
                 // si el reproductor no esta reproduciendo ninguna cancion
                 if (paused == null) {
+                    // cambiar la source del reproductor
                     bufferSong(data);
+                    paused = data.id; // nueva cancion
                     playSong(self);
-                } 
-                else {
+                } else {
                     if (paused == data.id) { // si ya esta cargada la cancion actual
-                        debugger;
                         playSong(self);
-                    } 
-                    else { // si hay que sobreescribir la cancion
+                    } else { // si hay que sobreescribir la cancion
+                        // cambiar la source del reproductor
                         bufferSong(data);
                         paused = data.id; // nueva cancion
                         playSong(self);
@@ -231,6 +252,31 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
                 console.log("Error al reproducir la canción", data);
             }
         });
+    })
+
+    // Botón custom de reproducción
+    $("#playButtonFooter").on("click", function() {
+        var music = $("#mediaPlayer")[0];
+        var self = this;
+        $(this).data('songid',paused);
+        var currentSong = $(this).data('songid');
+        console.log(currentSong);
+        // console.log($(this).data('songid'));
+        if (music.paused) {
+            // music.play();
+            playSong(self);
+            console.log( currentSong );
+            $('.play-button[data-songid='+currentSong+']')
+            .addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
+                //console.log("Play");
+        } else {
+            // music.pause();
+            pauseSong(self);
+            $('.pause-button')
+            .addClass('play-button glyphicon-play').removeClass('pause-button glyphicon-pause');
+            // $(this).addClass('glyphicon-play').removeClass('glyphicon-pause')
+                //console.log("Pause");
+        }
     })
 
     // Botón de pausa
@@ -255,7 +301,7 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         showFormEditSong(self);
         $('.edit-button-current').addClass('edit-button').removeClass('edit-button-current');
         $(this).addClass('edit-button-current').removeClass('edit-button');
-        $('#addSongButton').addClass('cancel-button btn-danger').removeClass('add-button btn-info');
+        // $('#addSongButton').addClass('cancel-button btn-danger').removeClass('add-button btn-info');
         $("#submitButton").removeData();
         $("#submitButton").addClass('edit-song').removeClass('create-song').html('Editar');
         $("#submitButton").data('songid', id);
@@ -300,9 +346,42 @@ $(document).ready(function() { // Cuando la página se ha cargado por completo
         return false; // Jquery cancela el envio del formulario (prevent default)
     });
 
+    $("#mediaPlayer").on("timeupdate", function(){
+        var playPercent = 100 * ($(this)[0].currentTime / duration);
+        $("#playhead")[0].style.marginLeft = playPercent + "%";
+    });
+
+    $("#mediaPlayer").on("canplaythrough", function(){
+        duration = $(this)[0].duration;
+    });
+
+    $("#mediaPlayer").on("ended", function(){
+        $(this).trigger('play');
+    });
+
+    $("#nextButtonFooter").on("click", function(){
+
+        //$(this).data("songid", )
+
+
+    });
+
+    $("#prevButtonFooter").on("click", function(){
+
+    });
+
+    //Makes timeline clickable
+    $("#timeline").on("click", function(evt){
+        var tracktime = duration * clickPercent(evt);
+        if(!isNaN(tracktime)){
+            $("#mediaPlayer")[0].currentTime = tracktime;
+            console.log("duracion * clickPercent", tracktime);
+        };
+    });
+
     // -------------------------------------------- Ejecución
+    var duration;
     var paused = null;
-    var currentForm = null;
     $(".form").hide();
     loadSongs();
 });
