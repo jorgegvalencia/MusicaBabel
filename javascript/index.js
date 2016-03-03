@@ -20,7 +20,7 @@ function loadSongs() {
                 html += "<div class='hidden-xs col-sm-1 col-md-2 col-lg-2'>";
                 html += "<span class='playingIndicator' data-song-id='"+ id +"'>";
                 html += "</div>";
-                html += "<div class='col-xs-6 col-sm-5 col-md-5 col-lg-5 col-md-offset-2 col-lg-offset-2'>";
+                html += "<div class='col-xs-6 col-sm-4 col-md-5 col-lg-5'>";
                 html += "<ul>";
                 html += "<li>Artista: " + artista + "</li>";
                 html += "<li>Canción: " + titulo + "</li>";
