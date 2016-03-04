@@ -122,7 +122,7 @@ function editSong(songid) {
     // pasar la validacion
     if (validateForm()) {
         $.ajax({
-            url: 'api/canciones/' + id,
+            url: 'api/canciones/' + songid,
             type: 'put',
             contentType: 'application/json',
             data: JSON.stringify({
@@ -133,8 +133,8 @@ function editSong(songid) {
             success: function() {
                 // eliminar cancion del main y recargar
                 // $(button).parent().remove();
-                loadSongs();
                 hideForm();
+                loadSongs();
                 alert('Editado con éxito');
             },
             error: function() {
@@ -500,7 +500,8 @@ $(document).ready(function() {
             if ($('#submitButton').hasClass('create-song')) {
                 createSong();
             } else {
-                editSong();
+                var songid = $('.edit-button-current').data('songid');
+                editSong(songid);
             }
         }
         return false; // Jquery cancela el envio del formulario (prevent default)
