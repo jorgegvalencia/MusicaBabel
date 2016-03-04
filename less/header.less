@@ -1,0 +1,45 @@
+.web.header{
+    height: @header-height;
+    background: linear-gradient(to left, lighten(#F7C41F,20%), lightblue);
+    border: solid 1px black;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+    .logo{
+        //background-color: #DF151A;
+        color: black;
+        font-size: 21px;
+        //border: solid 2px black;
+        border-radius: 5 px;
+        text-align: center;
+        margin-top: 5px;
+        font-family: 'rock salt';
+
+    }
+    .add-button {
+        float: right;
+        margin-top: 3px;
+        border: solid 1px black;
+    }
+    .cancel-button {
+        float: right;
+        margin-top: 4px;
+        border: solid 1px black;
+    }
+}
+
+.web.player {
+    bottom: 0;
+    height: @footer-height;
+    position: fixed;
+    width: 100%;
+    border: solid 2px black;
+    background: linear-gradient(to left, lighten(#F7C41F,20%), lightblue);
+    .audio-player-container{
+        margin-top: 4px;
+        .audio-player{
+            display: block;
+            margin: 0 auto;
+        }
+    }
+}

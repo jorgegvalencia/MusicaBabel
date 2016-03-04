@@ -1,0 +1,24 @@
+{
+  "name": "musicababel",
+  "version": "1.0.0",
+  "description": "Proyecto HANDS-ON de Front-end Avanzado. Reproductor de música",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://jorgegvalencia@github.com/jorgegvalencia/MusicaBabel.git"
+  },
+  "author": "jorgegvalencia, hecmocer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jorgegvalencia/MusicaBabel/issues"
+  },
+  "homepage": "https://github.com/jorgegvalencia/MusicaBabel#readme",
+  "dependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-less": "^1.2.0",
+    "grunt-contrib-watch": "^0.6.1"
+  }
+}

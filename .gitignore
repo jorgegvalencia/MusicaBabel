@@ -1,0 +1,17 @@
+# Node modules
+node_modules/
+
+# Bower components
+bower_components/
+
+# Archivos del SO
+Thumbs.db
+
+# CSS files
+style.css
+
+# Sparrest db
+db/
+
+# Python
+*.py*
