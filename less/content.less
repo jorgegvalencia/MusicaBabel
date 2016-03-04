@@ -1,23 +1,34 @@
-body{
-    background-color: lighten(orange, 70%);
+body {
+    // background-color: lighten(orange, 70%);
+    background-image: url('../images/tocadiscos.jpg');
+    background-position: fixed;
 }
 
 .music.item.list {
     padding-top: @header-height;
     padding-bottom: @footer-height;
     .music.item {
-        transition: 250ms;
-        background-color: lighten(#7A528E, 50%);
-        border: black solid 1px;
+        transition: 500ms;
+        // background-color: lighten(#7A528E, 50%);
+        background: linear-gradient( to left top, lighten(orange, 30%), lightblue); 
+        border: azure solid px;
+        margin: 5px;
         ul {
             list-style-type: none;
             //padding-left: 0;
+            // border: 2px solid lightblue;
+            // padding: 6px;
+            // border-radius: 5px;
+            span {
+                padding: 0px 3px;   
+            }
         }
         &:hover {
-            box-shadow: grey 0 2px;
-            background: lighten(#F38630, 25%);
+            // box-shadow: grey 1px 1px;
+            opacity: 0.9;
+            // background: lighten(#F38630, 25%);
         }
-        border-bottom: solid 1px black;
+        // border-bottom: solid 1px black;
         margin-top: -1px;
         padding-top: 10px;
         font-family: 'Source Sans Pro';
@@ -26,11 +37,13 @@ body{
             float: right;
             margin-right: -42px;
             padding-top: 3px;
+            .play-button, .pause-button{
+                margin: 0px 3px;
+            }
         }
         .other-button {
             margin-top: 2px;
         }
-
     }
     .currentEditing {
         background: lighten(#F38630, 7%);
@@ -58,6 +71,6 @@ body {
     overflow-y: scroll;
 }
 
-button:disabled{
+button:disabled {
     visibility: hidden;
 }
