@@ -12,24 +12,31 @@ function loadSongs() {
         url: '/api/canciones',
         type: 'get',
         success: function(data) {
+
+            var iteracion = 0;
             console.log("loading songs");
             var html = "";
             songsIndex = [];
+
+            html = "<h2>Tus canciones</h2>";
+            $("#listadoCanciones").append(html);
+
             for (var i in data) {
+                html = "";
                 var id = data[i].id; // id de la cancion
                 var artista = data[i].artista; // nombre del artista
                 var titulo = data[i].titulo; // nombre de la canción
                 var url = data[i].url; // url de la canción
                 songsIndex.push(id);
-                html += "<article class='music item' data-songid='" + id + "'>";
+                html += "<article class='music item animated fadeInUp' data-songid='" + id + "'>";
                 html += "<div class='row'>"
                 html += "<div class='hidden-xs col-sm-1 col-md-2 col-lg-2'>";
                 html += "<span class='playingIndicator' data-songid='" + id + "'>";
                 html += "</div>";
                 html += "<div class='col-xs-6 col-sm-4 col-md-5 col-lg-5'>";
                 html += "<ul>";
-                html += "<li><i>Artista - </i> " + artista + "</li>";
-                html += "<li><i>Canción - </i> " + titulo + "</li>";
+                html += "<li><span class='glyphicon glyphicon-user'><i>Artista - </i> " + artista + "</li>";
+                html += "<li><span class='glyphicon glyphicon-equalizer'><i>Canción - </i> " + titulo + "</li>";
                 html += "</ul>";
                 html += "</div>";
                 html += "<div class='col-xs-4 col-sm-6 col-md-2 col-lg-2'>";
@@ -39,10 +46,14 @@ function loadSongs() {
                 html += "<button data-songid='" + id + "' class='glyphicon glyphicon-trash delete-button btn btn-danger btn-sm other-button' type='button'></button>";
                 html += "</div>";
                 html += "</div>";
-                html += "<div data-songid='" + id + "' class='edit-form col-xs-12 col-sm-12 col-md-12 col-lg-12' style='background-color: azure'></div>";
                 html += "</article>";
+
+                setTimeout( function(){
+                    $("#listadoCanciones").append(html);
+                }, iteracion*50);
+                iteracion++;
             }
-            $("#listadoCanciones").html(html);
+
             console.log(songsIndex);
         },
         error: function() {
@@ -137,9 +148,16 @@ function deleteSong(songid) {
         type: 'delete',
         success: function() {
             // eliminar cancion del main y recargar
-            $('.music.item[data-songid='+songid+']').remove();
-            var index = songsIndex.indexOf(songid);
-            songsIndex.splice(index, 1);
+
+            $('.music.item[data-songid='+songid+']').addClass("animated rollOut");
+            console.log("RollOut animated");
+            //wait for animation to finish before removing classes
+            window.setTimeout( function(){
+                $('.music.item[data-songid='+songid+']').remove();
+                var index = songsIndex.indexOf(songid);
+                songsIndex.splice(index, 1);
+                console.log("RollOut deleted");
+            }, 600);
             // loadSongs();
         },
         error: function() {
@@ -205,8 +223,8 @@ function playSong(songid) {
     }
     else{
          $('#mediaPlayer').trigger('play'); // reproduce la cancion
-    }
-}
+     }
+ }
 
 
 // Pausa la cancion actual
@@ -320,7 +338,6 @@ function clickPercent(evt) {
         return percent;
     }
 }
-
 
 // ------------------------- Manejadores de evento -------------------------
 $(document).ready(function() {
@@ -504,6 +521,15 @@ $(document).ready(function() {
         duration = $(this)[0].duration;
     });
 
+    // Disparar animacion tada al hacer hover sobre el icono
+    $("#logo").on("mouseover", function(){
+        var self = this;
+        $(self).addClass("animated tada");
+        //wait for animation to finish before removing classes
+        window.setTimeout( function(){
+            $(self).removeClass("animated tada");
+        }, 1250);
+    });
 
     // ------------------------------ Ejecucion ------------------------------
 
@@ -515,13 +541,13 @@ $(document).ready(function() {
 
     // Cargar configuracion por defecto de las peticiones ajax
     $.ajaxSetup({
-            beforeSend: function() {
-                $('body').addClass('loading');
-            },
-            complete: function() {
-                $('body').removeClass('loading');
-            }
-        })
+        beforeSend: function() {
+            $('body').addClass('loading');
+        },
+        complete: function() {
+            $('body').removeClass('loading');
+        }
+    })
         // Cargar las canciones existentes al cargar la pagina
-    loadSongs();
-});
+        loadSongs();
+    });
