@@ -17,9 +17,15 @@ function loadSongs() {
             console.log("loading songs");
             var html = "";
             // var iteracion = 0;
-            html = "<h2> Tus canciones </h2>";
             $('#listadoCanciones').append(html);
             songsIndex = [];
+
+            if(data.length <= 0){
+                html = "<h2 class='animated zoomInDown'> Añade tus canciones </h2>";
+            } 
+            else{
+                html = "<h2> Tus canciones </h2>";
+            }
             for (var i in data) {
                 // html = "";
                 var id = data[i].id; // id de la cancion
