@@ -401,6 +401,7 @@ $(document).ready(function() {
         playSong(next);
         // actualizar boton de reproduccion de la cancion
         $('.play-button[data-songid=' + next + ']').addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
+        $('#playButtonFooter').addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
         // icono de now playing
         $('.playingIndicator').removeClass('glyphicon glyphicon-volume-up');
         $('.music.item').find('.playingIndicator[data-songid=' + next + ']').addClass('glyphicon glyphicon-volume-up');
@@ -421,6 +422,7 @@ $(document).ready(function() {
         playSong(prev);
         // actualizar boton de reproduccion de la cancion
         $('.play-button[data-songid=' + prev + ']').addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
+        $('#playButtonFooter').addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
         // icono de now playing
         $('.playingIndicator').removeClass('glyphicon glyphicon-volume-up');
         $('.music.item').find('.playingIndicator[data-songid=' + prev + ']').addClass('glyphicon glyphicon-volume-up');
