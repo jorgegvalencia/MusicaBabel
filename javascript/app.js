@@ -20,10 +20,6 @@ function loadSongs() {
             html = "<h2> Tus canciones </h2>";
             $('#listadoCanciones').append(html);
             songsIndex = [];
-
-            html = "<h2>Tus canciones</h2>";
-            $("#listadoCanciones").append(html);
-
             for (var i in data) {
                 // html = "";
                 var id = data[i].id; // id de la cancion
@@ -55,7 +51,7 @@ function loadSongs() {
                 // }, iteracion*125);
                 // iteracion++;
             }
-
+            $('#listadoCanciones').html(html);
             console.log(songsIndex);
         },
         error: function() {
