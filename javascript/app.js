@@ -35,8 +35,8 @@ function loadSongs() {
                 html += "</div>";
                 html += "<div class='col-xs-6 col-sm-4 col-md-5 col-lg-5'>";
                 html += "<ul>";
-                html += "<li><span class='glyphicon glyphicon-user'><i>Artista - </i> " + artista + "</li>";
-                html += "<li><span class='glyphicon glyphicon-equalizer'><i>Canción - </i> " + titulo + "</li>";
+                html += "<li><span class='glyphicon glyphicon-user'> <i>Artista - </i> " + artista + "</li>";
+                html += "<li><span class='glyphicon glyphicon-equalizer'> <i>Canción - </i> " + titulo + "</li>";
                 html += "</ul>";
                 html += "</div>";
                 html += "<div class='col-xs-4 col-sm-6 col-md-2 col-lg-2'>";
