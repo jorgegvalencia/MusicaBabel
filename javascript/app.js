@@ -40,8 +40,8 @@ function loadSongs() {
                 html += "</div>";
                 html += "<div class='col-xs-6 col-sm-4 col-md-5 col-lg-5'>";
                 html += "<ul>";
-                html += "<li><span class='glyphicon glyphicon-user'> <i>Artista - </i> " + artista + "</li>";
-                html += "<li><span class='glyphicon glyphicon-equalizer'> <i>Canción - </i> " + titulo + "</li>";
+                html += "<li><span class='glyphicon glyphicon-user'> " + artista + "</li>";
+                html += "<li><span class='glyphicon glyphicon-music'> " + titulo + "</li>";
                 html += "</ul>";
                 html += "</div>";
                 html += "<div class='col-xs-4 col-sm-6 col-md-2 col-lg-2'>";
@@ -365,8 +365,8 @@ $(document).ready(function() {
         var id = $(this).data("songid"); // tomar el id de la cancion
         playSong(id);
         // icono de now playing
-        $('.playingIndicator').removeClass('glyphicon glyphicon-volume-up');
-        $(this).parent().parent().parent().find('.playingIndicator').addClass('glyphicon glyphicon-volume-up');
+        $('.playingIndicator').removeClass('glyphicon glyphicon-equalizer');
+        $(this).parent().parent().parent().find('.playingIndicator').addClass('glyphicon glyphicon-equalizer');
         // cambiar la clase de los demas iconos a play
         $('.pause-button').addClass('play-button glyphicon-play').removeClass('pause-button glyphicon-pause');
         // cambiar la clase del boton de reproduccion/pausa custom
@@ -421,8 +421,8 @@ $(document).ready(function() {
         $('.play-button[data-songid=' + next + ']').addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
         $('#playButtonFooter').addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
         // icono de now playing
-        $('.playingIndicator').removeClass('glyphicon glyphicon-volume-up');
-        $('.music.item').find('.playingIndicator[data-songid=' + next + ']').addClass('glyphicon glyphicon-volume-up');
+        $('.playingIndicator').removeClass('glyphicon glyphicon-equalizer');
+        $('.music.item').find('.playingIndicator[data-songid=' + next + ']').addClass('glyphicon glyphicon-equalizer');
     });
 
     // Boton de reproducir anterior
@@ -442,8 +442,8 @@ $(document).ready(function() {
         $('.play-button[data-songid=' + prev + ']').addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
         $('#playButtonFooter').addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
         // icono de now playing
-        $('.playingIndicator').removeClass('glyphicon glyphicon-volume-up');
-        $('.music.item').find('.playingIndicator[data-songid=' + prev + ']').addClass('glyphicon glyphicon-volume-up');
+        $('.playingIndicator').removeClass('glyphicon glyphicon-equalizer');
+        $('.music.item').find('.playingIndicator[data-songid=' + prev + ']').addClass('glyphicon glyphicon-equalizer');
     });
 
 
@@ -525,8 +525,8 @@ $(document).ready(function() {
         $('.pause-button[data-songid=' + currentSong + ']').addClass('play-button glyphicon-play').removeClass('pause-button glyphicon-pause');
         $('.play-button[data-songid=' + next + ']').addClass('pause-button glyphicon-pause').removeClass('play-button glyphicon-play');
         // icono de now playing
-        $('.playingIndicator').removeClass('glyphicon glyphicon-volume-up');
-        $('.music.item').find('.playingIndicator[data-songid=' + next + ']').addClass('glyphicon glyphicon-volume-up');
+        $('.playingIndicator').removeClass('glyphicon glyphicon-equalizer');
+        $('.music.item').find('.playingIndicator[data-songid=' + next + ']').addClass('glyphicon glyphicon-equalizer');
     });
 
     // Actualizar barra de progreso custom
