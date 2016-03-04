@@ -242,6 +242,8 @@ function showForm() {
     $(".form").slideDown('200');
     // cambiar la clase del boton de añadir cancion
     $('#addSongButton').addClass('cancel-button btn-danger').removeClass('add-button btn-info');
+    // y el icono
+    $('#addSongButton').children().removeClass('glyphicon-plus').addClass('glyphicon-minus');
     $(window).scrollTop(0);
 }
 
@@ -275,6 +277,8 @@ function hideForm() {
     $(".form").slideUp('200');
     // cambiar la clase del boton de añadir a la original
     $('#addSongButton').addClass('add-button btn-info').removeClass('cancel-button btn-danger');
+    // y el icono
+    $('#addSongButton').children().removeClass('glyphicon-minus').addClass('glyphicon-plus');
     // eliminar estilos de la cancion que se esta editando
     $('.music.item').removeClass('currentEditing');
 }
@@ -483,6 +487,8 @@ $(document).ready(function() {
         showForm();
         // cambiar la clase del boton de añadir cancion
         $(this).addClass('cancel-button btn-danger').removeClass('add-button btn-info');
+        // y el icono
+        //$(this).children().removeClass('glyphicon-plus').addClass('glyphicon-minus');
         //cambiar la clase del boton de editar por la de guardar
         $('#submitButton').addClass('create-song').removeClass('edit-song').removeData().html('Guardar');
     });
@@ -492,6 +498,8 @@ $(document).ready(function() {
         hideForm();
         // cambiar la clase del boton de añadir cancion
         $(this).addClass('add-button btn-info').removeClass('cancel-button btn-danger');
+        // y el icono
+        //$(this).children().removeClass('glyphicon-minus').addClass('glyphicon-plus');
         //$(this).parents(".music.item").addClass('currentEditing');
     });
 
